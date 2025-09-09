@@ -34,9 +34,10 @@ export default function MoviesPage() {
   // Slider 1
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     renderMode: "performance",
-    slides: { perView: 1, spacing: 10 },
+    
+    slides: { perView: 1, spacing: 0 },
     breakpoints: {
-      "(min-width: 640px)": { slides: { perView: 3, spacing: 15 } }, // sm
+      "(min-width: 640px)": { slides: { perView: 3, spacing: 10 } }, // sm
       "(min-width: 1024px)": { slides: { perView: 4, spacing: 15 } }, // lg
       "(min-width: 1280px)": { slides: { perView: 4, spacing: 20 } }, // xl
     },
@@ -46,12 +47,12 @@ export default function MoviesPage() {
   if (isLoadingAll) return <div>Loading...</div>;
 
   return (
-    <section className="bg-[#1C352D] min-h-screen text-white p-4 relative">
-      <h1 className="mb-4 text-xl flex justify-center">Recently Added</h1>
+    <section className="bg-[#222831] min-h-screen text-white px-2 sm:px-4 lg:px-12 relative ">
+      <h1 className="mb-4 p-4 text-xl flex justify-center items-center">Recently Added</h1>
 
       {/* All */}
       <div className="relative mb-12">
-        <div ref={sliderRef} className="keen-slider">
+        <div ref={sliderRef} className="keen-slider overflow-hidden">
           {allData?.map((movie: any, index: number) => (
 <div
   key={index}
@@ -102,14 +103,6 @@ export default function MoviesPage() {
 </div>
 
 
-
-
-
-
-
-
-
-
           ))}
         </div>
 
@@ -133,7 +126,7 @@ export default function MoviesPage() {
 
   {/* Movies  */}
   
-      <div className="relative mb-12 lg:grid-cols-5 md:grid-cols-3 grid-cols-2 grid gap-2 justify-center items-center">
+      <div className="relative mb-12 lg:grid-cols-5 md:grid-cols-3 grid-cols-2 grid gap-2">
         
           {moviesData?.map((movie2: any, index: number) => (
 <div
@@ -171,7 +164,8 @@ export default function MoviesPage() {
 
   {/* صورة الفيلم */}
   <Image
-    className="object-cover w-full h-full rounded-xl"
+    className="object-cover max-w-full max-h-full rounded-xl"
+
     src={`${environment.baseImgUrl}${movie2.poster_path}`}
     alt={movie2.title}
     sizes="(max-width: 640px) 50vw,
@@ -182,14 +176,8 @@ export default function MoviesPage() {
     height={360}
   />
 </div>
-
-
           ))}
-
-
       </div>
-
-
     </section>
   );
 }
