@@ -33,7 +33,7 @@ export default function MoviesPage() {
   // Slider
 const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
   renderMode: "performance",
-  slides: { perView: 1, spacing: 5 }, // صورة واحدة على الموبايل
+  slides: { perView: 1, spacing: 0 }, // صورة واحدة على الموبايل
   breakpoints: {
     "(min-width: 640px)": { slides: { perView: 3, spacing: 10 } }, // sm
     "(min-width: 1024px)": { slides: { perView: 4, spacing: 15 } }, // lg
@@ -48,26 +48,28 @@ const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
       <h1 className="mb-4 text-xl flex justify-center items-center">Recently Added</h1>
 
       {/* Slider */}
-      <div className="relative mb-12 overflow-x-auto">
-        <div ref={sliderRef} className="keen-slider flex gap-4">
+      <div className="relative mb-12 ">
+        <div ref={sliderRef} className="keen-slider flex gap-4 overflow-hidden">
           {allData?.map((movie: any, index: number) => (
 <div
   key={index}
   className="keen-slider__slide flex-shrink-0 w-full sm:w-[180px] lg:w-[220px] group relative rounded-2xl shadow-lg overflow-hidden"
 >
 
+
 <Image
-  className="w-full h-auto lg:object-cover rounded-xl"
+  className="w-full h-auto object-cover rounded-xl"
   src={`${environment.baseImgUrl}${movie.poster_path}`}
   alt={movie.title}
   width={220}
   height={330}
   priority={index < 4}
-  sizes="(max-width: 640px) 100px,  /* للموبايل */
-         (max-width: 768px) 180px,  /* sm */
-         (max-width: 1024px) 220px, /* md/lg */
-         220px"                     /* xl وأكبر */
+  sizes="(max-width: 640px) 100vw,   /* الموبايل full width */
+         (max-width: 768px) 180px,  
+         (max-width: 1024px) 220px, 
+         220px"
 />
+
 
               <div className="absolute top-2 left-2 rounded-md bg-amber-400/90 px-2 py-1 shadow-xl text-xs sm:text-sm">
                 {movie.vote_average.toFixed(1)}
