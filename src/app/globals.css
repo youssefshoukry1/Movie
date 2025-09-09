@@ -3,10 +3,23 @@ body{
     margin: 0;
     padding: 0;
 }
-.nav-link{
-
+/* Scrollbar مخصص */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.active-link{
+::-webkit-scrollbar-track {
+  background: #222831;
+  border-radius: 8px;
+}
 
+::-webkit-scrollbar-thumb {
+  background-color: #ffb400;
+  border-radius: 8px;
+  border: 2px solid #222831;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ffa500;
 }
