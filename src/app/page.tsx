@@ -1,13 +1,15 @@
 "use client";
+
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { environment } from "../app/enivronment";
+import { environment } from "./enivronment";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
-export default function MoviesPage() {
+export default function Home() {
   const { isLoading: isLoadingAll, data: allData } = useQuery({
     queryKey: ["getAll"],
     queryFn: async () => {
@@ -31,44 +33,46 @@ export default function MoviesPage() {
   });
 
   // Slider
-const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-  renderMode: "performance",
-  slides: { perView: 1, spacing: 0 }, // صورة واحدة على الموبايل
-  breakpoints: {
-    "(min-width: 640px)": { slides: { perView: 3, spacing: 10 } }, // sm
-    "(min-width: 1024px)": { slides: { perView: 4, spacing: 15 } }, // lg
-    "(min-width: 1280px)": { slides: { perView: 4, spacing: 20 } }, // xl
-  },
-});
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    renderMode: "performance",
+    slides: { perView: 1, spacing: 0 }, // صورة واحدة على الموبايل
+    breakpoints: {
+      "(min-width: 640px)": { slides: { perView: 3, spacing: 10 } }, // sm
+      "(min-width: 1024px)": { slides: { perView: 4, spacing: 15 } }, // lg
+      "(min-width: 1280px)": { slides: { perView: 4, spacing: 20 } }, // xl
+    },
+  });
 
   if (isLoadingAll) return <div>Loading...</div>;
 
   return (
     <section className="bg-[#222831] min-h-screen text-white relative px-4 lg:px-8">
-      <h1 className="mb-4 text-xl flex justify-center items-center">Recently Added</h1>
+      <h1 className="mb-4 text-xl flex justify-center items-center">
+        Recently Added
+      </h1>
 
       {/* Slider */}
       <div className="relative mb-12 ">
-<div ref={sliderRef} className="keen-slider overflow-hidden">
-  {allData?.map((movie: any, index: number) => (
-    <div
-      key={index}
-      className="keen-slider__slide flex-shrink-0 w-[150px] sm:w-[180px] lg:w-[220px] group relative rounded-2xl shadow-lg overflow-hidden"
-    >
-      <Image
-        className="w-full h-auto object-cover rounded-xl"
-        src={`${environment.baseImgUrl}${movie.poster_path}`}
-        alt={movie.title}
-        width={220}
-        height={330}
-        priority={index < 4}
-        sizes="(max-width: 640px) 150px,
-               (max-width: 768px) 180px,
-               (max-width: 1024px) 220px,
-               220px"
-      />
-
-
+        <div ref={sliderRef} className="keen-slider overflow-hidden">
+          {allData?.map((movie: any, index: number) => (
+            <div
+              key={index}
+              className="keen-slider__slide flex-shrink-0 w-[150px] sm:w-[180px] lg:w-[220px] group relative rounded-2xl shadow-lg overflow-hidden"
+            >
+              <Link href={`Movies/${movie.id}`}>
+                <Image
+                  className="w-full h-auto object-cover rounded-xl"
+                  src={`${environment.baseImgUrl}${movie.poster_path}`}
+                  alt={movie.title}
+                  width={220}
+                  height={330}
+                  priority={index < 4}
+                  sizes="(max-width: 640px) 150px,
+                (max-width: 768px) 180px,
+                (max-width: 1024px) 220px,
+                220px"
+                />
+              </Link>
               <div className="absolute top-2 left-2 rounded-md bg-amber-400/90 px-2 py-1 shadow-xl text-xs sm:text-sm">
                 {movie.vote_average.toFixed(1)}
               </div>
@@ -103,7 +107,7 @@ const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
       </div>
 
       {/* Movies Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-12">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
         {moviesData?.map((movie2: any, index: number) => (
           <div
             key={index}
