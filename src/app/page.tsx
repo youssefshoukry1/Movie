@@ -114,7 +114,7 @@ export default function Home() {
       </div>
 
       {/* Movies Grid */}
-      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
+      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 lg:gap-8 gap-5 mb-12">
         {moviesData?.map((movie2: any, index: number) => (
           <>
             <Link href={`Movies/${movie2.id}`}>
