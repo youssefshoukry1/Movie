@@ -8,6 +8,7 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import HomeLoading from "./loading";
 
 export default function Home() {
   const { isLoading: isLoadingAll, data: allData } = useQuery({
@@ -35,7 +36,7 @@ export default function Home() {
   // Slider
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     renderMode: "performance",
-    slides: { perView: 1, spacing: 0 }, // صورة واحدة على الموبايل
+    slides: { perView: 2, spacing: 10 }, // صورة واحدة على الموبايل
     breakpoints: {
       "(min-width: 640px)": { slides: { perView: 3, spacing: 10 } }, // sm
       "(min-width: 1024px)": { slides: { perView: 4, spacing: 15 } }, // lg
@@ -43,7 +44,7 @@ export default function Home() {
     },
   });
 
-  if (isLoadingAll) return <div>Loading...</div>;
+  if (isLoadingAll) return <HomeLoading/>;
 
   return (
     <section className="bg-[#222831] min-h-screen text-white relative px-4 lg:px-8">
@@ -113,7 +114,7 @@ export default function Home() {
       </div>
 
       {/* Movies Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
         {moviesData?.map((movie2: any, index: number) => (
           <>
             <Link href={`Movies/${movie2.id}`}>

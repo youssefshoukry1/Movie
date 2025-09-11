@@ -6,6 +6,7 @@ import { environment } from "../../enivronment";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
+import MovieDetailsLoading from "@/app/loadding";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -21,7 +22,7 @@ export default function MovieDetails() {
     staleTime: 4000,
   });
 
-  if (isLoading) return <div className="text-center py-20">Loading...</div>;
+  if (isLoading) return (< MovieDetailsLoading/>)
 
   return (
     <section className="relative min-h-screen text-white overflow-hidden">
@@ -64,7 +65,7 @@ export default function MovieDetails() {
                    270px"
           />
           <div className="absolute top-2 left-2 rounded-md bg-amber-400/90 px-2 py-1 shadow-xl text-xs sm:text-sm font-bold text-black">
-            ⭐ {movieDetails.vote_average.toFixed(1)}
+              {movieDetails.vote_average.toFixed(1)}
           </div>
         </motion.div>
 
