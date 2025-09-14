@@ -13,8 +13,7 @@ import { useEffect, useState } from "react";
 import { useRouter,useSearchParams } from "next/navigation";
 
 export default function Home() {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [search, setSearch] = useState("");
+
   const router = useRouter();
    const currentPage = Number(useSearchParams().get('page')) || 1;
   const [ page, setPage ] = useState(currentPage);
@@ -30,7 +29,7 @@ export default function Home() {
     staleTime: 4000,
   });
 
-  const { data: moviesData } = useQuery({
+  const { data: moviesData  } = useQuery({
     queryKey: ["getMoveis", page],
     queryFn: async () => {
       const { data } = await axios.get(
@@ -61,103 +60,7 @@ export default function Home() {
 
   return (
     <section className="bg-[#222831] min-h-screen  text-white relative px-4 lg:px-8 pt-5 overflow-x-hidden">
-      <div
-        className=" mx-auto p-8 border-2 border-yellow-500 
-              flex justify-center items-center rounded-4xl shadow-2xl  "
-      >
-        <>
-          <form
-            className=" relative rounded-3x flex justify-around items-center w-full "
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (search.trim()) {
-                router.push(`/search/${search}`);
-              }
-            }}
-          >
-            <div className="flex relative gap-4 ">
-              <button
-                id="dropdown-button"
-                type="button"
-                className=" outline-none shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200  focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                onClick={() => setShowDropdown((prev) => !prev)}
-              >
-                All
-                <svg
-                  className="w-2.5 h-2.5 ms-2.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              {showDropdown && (
-                <div
-                  id="dropdown"
-                  className="z-20 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 absolute left-0 top-12"
-                >
-                  <ul
-                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                    aria-labelledby="dropdown-button"
-                  >
-                    <li>
-                      <Link href={`/category-table/women`}>
-                        {" "}
-                        <button
-                          type="button"
-                          className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Movies
-                        </button>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={`/electronic/electronic`}>
-                        {" "}
-                        <button
-                          type="button"
-                          className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Tv
-                        </button>
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-              <div className="relative w-full ">
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  type="search"
-                  id="search-dropdown"
-                  className=" outline-none block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500 text-center"
-                  placeholder="Search here..."
-                  required
-                />
-              </div>
-            </div>
-            <Image
-              src="/video-camera.webp"
-              width={50}
-              height={50}
-              alt="Logo"
-              className="me-4 hidden sm:inline lg:hover:-scale-x-95 transition-transform duration-300 cursor-pointer"
-              priority
-              sizes="(max-width: 768px) 20px, (max-width: 1200px) 60px, 70px"
-            />
-            <h1 className=" absolute ">Cima Quilty</h1>
-          </form>
-        </>
-      </div>
+
 
       <h1 className="mb-4 text-xl flex justify-center items-center pt-10">
         Recently Added

@@ -25,7 +25,7 @@ export default function MovieDetails() {
   if (isLoading) return (< MovieDetailsLoading/>)
 
   return (
-    <section className="relative min-h-screen text-white overflow-hidden">
+    <section className="relative min-h-screen text-white overflow-hidden mt-6">
       {/* Backdrop */}
       <motion.div
         className="absolute inset-0"
