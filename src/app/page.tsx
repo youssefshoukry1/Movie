@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <section className="bg-[#222831] min-h-screen text-white relative px-4 lg:px-8 pt-5">
       <div
-        className=" mx-auto w-[750px] p-8 border-2 border-yellow-500 
+        className=" mx-auto  p-8 border-2 border-yellow-500 
               flex justify-center items-center rounded-4xl shadow-2xl  "
       >
         <>
