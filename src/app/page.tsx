@@ -60,9 +60,9 @@ export default function Home() {
   if (isLoadingAll) return <HomeLoading />;
 
   return (
-    <section className="bg-[#222831] min-h-screen text-white relative px-4 lg:px-8 pt-5">
+    <section className="bg-[#222831] min-h-screen  text-white relative px-4 lg:px-8 pt-5 overflow-x-hidden">
       <div
-        className=" mx-auto  p-8 border-2 border-yellow-500 
+        className=" mx-auto p-8 border-2 border-yellow-500 
               flex justify-center items-center rounded-4xl shadow-2xl  "
       >
         <>
