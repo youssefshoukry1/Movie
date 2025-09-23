@@ -38,7 +38,6 @@ export default function MoviesPage() {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#222831] to-[#111] text-white relative px-4 lg:px-8 pt-5 overflow-x-hidden">
-
       {/* Header */}
       <div
         className="mx-auto p-4 border border-gray-700 

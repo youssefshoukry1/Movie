@@ -9,6 +9,7 @@ import Link from "next/link";
 import HomeLoading from "../loading";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Heart } from "lucide-react";
 
 export default function TvPage() {
   const searchParams = useSearchParams();
@@ -38,7 +39,6 @@ export default function TvPage() {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#222831] to-[#111] text-white relative px-4 lg:px-8 pt-5 overflow-x-hidden">
-
       {/* Header */}
       <div
         className="mx-auto p-4 border border-gray-700 
@@ -105,7 +105,10 @@ export default function TvPage() {
                     </Link>
                   </li>
                   <li>
-                    <Link href={`/Movies`} onClick={() => setShowDropdown(false)}>
+                    <Link
+                      href={`/Movies`}
+                      onClick={() => setShowDropdown(false)}
+                    >
                       <span className="block px-4 py-2 hover:bg-yellow-500 hover:text-black rounded-md transition">
                         Movies
                       </span>
@@ -136,6 +139,10 @@ export default function TvPage() {
         {tvData?.map((tv: any, index: number) => (
           <Link href={`MoviesDetails/${tv.id}`} key={index}>
             <div className="relative group shadow-lg rounded-2xl overflow-hidden hover:scale-105 transition-transform duration-500">
+              <button className=" absolute text-2xl mx-32 my-2">
+                <Heart />
+              </button>
+
               <Image
                 className="w-full h-full object-cover rounded-xl"
                 src={`${environment.baseImgUrl}${tv.poster_path}`}
@@ -143,7 +150,6 @@ export default function TvPage() {
                 width={240}
                 height={360}
               />
-
               {/* Rating Badge */}
               <div className="absolute top-2 left-2 rounded-md bg-amber-400/90 px-2 py-1 shadow-xl text-xs sm:text-sm">
                 {tv.vote_average?.toFixed(1)}

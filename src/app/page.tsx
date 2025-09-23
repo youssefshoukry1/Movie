@@ -9,8 +9,10 @@ import { useKeenSlider } from "keen-slider/react";
 import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import HomeLoading from "./loading";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import UserContext from "./context/userContext/UserContextProvider";
+import SignUp from "./SignUp/page";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -20,6 +22,7 @@ export default function Home() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [search, setSearch] = useState("");
   const router = useRouter();
+  const { Signup } = useContext(UserContext)
 
   const { isLoading: isLoadingAll, data: allData } = useQuery({
     queryKey: ["getAll"],
@@ -74,7 +77,6 @@ export default function Home() {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-[#0f0f0f] via-[#1b1b1b] to-[#000] text-white relative px-4 lg:px-8 pt-5 overflow-x-hidden">
-      
       {/* Header */}
       <div
         className="mx-auto p-4 border border-gray-700 
@@ -152,6 +154,12 @@ export default function Home() {
           />
         </form>
       </div>
+
+      {
+        !Signup? (
+          <SignUp/>
+        ):null
+      }
 
       {/* Recently Added */}
       <div className="text-center my-10">
