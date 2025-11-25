@@ -19,16 +19,14 @@ export default function CallBack() {
       console.log("No token found");
       return;
     }
-
     axios
       .post(
-        `${environment.apiBaseUrl}/authentication/session/new?api_key=${environment.api_Key}`,
-        { request_token: token }
+        `${environment.apiBaseUrl}/authentication/session/new?api_key=${environment.api_Key}`,{ request_token: token }
       )
       .then((res) => {
         console.log("session_id:", res.data.session_id);
         localStorage.setItem("session_id", res.data.session_id);
-         window.location.href = `/`
+        window.location.href = `/`;
       })
       .catch((err) => {
         console.log("err", err);
@@ -42,7 +40,6 @@ export default function CallBack() {
         type="button"
         className="text-white cursor-pointer bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:outline-none focus:bg-amber-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2"
       >
-      
         Go To Home Page
       </button>
     </div>

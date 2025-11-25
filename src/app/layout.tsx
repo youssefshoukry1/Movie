@@ -4,6 +4,8 @@ import "./globals.css";
 import Footer from "./Footer/Footer";
 import { Providers } from "../app/Provider";
 import { UserContextProvider } from "./context/userContext/UserContextProvider";
+import { CartContextProvider } from "./context/FavoriteAdd/FavoriteContext";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +33,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserContextProvider>
-          <Providers>{children}</Providers>
-          <Footer />
+          <CartContextProvider>
+            <Providers>{children}</Providers>
+            <Footer />
+          </CartContextProvider>
         </UserContextProvider>
       </body>
     </html>

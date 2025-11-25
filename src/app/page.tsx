@@ -6,13 +6,16 @@ import Image from "next/image";
 import { environment } from "./enivronment";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
-import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown, Heart } from "lucide-react";
 import Link from "next/link";
 import HomeLoading from "./loading";
 import { useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import UserContext from "./context/userContext/UserContextProvider";
 import SignUp from "./SignUp/page";
+import FavoriteContext from "./context/FavoriteAdd/FavoriteContext";
+
+
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -22,7 +25,35 @@ export default function Home() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [search, setSearch] = useState("");
   const router = useRouter();
-  const { Signup } = useContext(UserContext)
+  const { Signup } = useContext(UserContext);
+  const { postFavourite } = useContext(FavoriteContext);
+  const [favMovies, setFavMovies] = useState<number[]>([]);
+  
+
+  useEffect(() => {
+    const saved = localStorage.getItem("favMovies");
+    if (saved) {
+      setFavMovies(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("favMovies", JSON.stringify(favMovies));
+  }, [favMovies]);
+
+  const handleClick = (id: number, type: string) => {
+    postFavourite(id, type);
+    // لو الفيلم موجود في الليستة، شيله. لو مش موجود ضيفه
+    setFavMovies((prev) => {
+      if (prev.includes(id)) {
+        // لو موجود، شيله
+        return prev.filter((movieId) => movieId !== id);
+      } else {
+        // لو مش موجود، ضيفه
+        return [...prev, id];
+      }
+    });
+  };
 
   const { isLoading: isLoadingAll, data: allData } = useQuery({
     queryKey: ["getAll"],
@@ -155,11 +186,22 @@ export default function Home() {
         </form>
       </div>
 
-      {
-        !Signup? (
-          <SignUp/>
-        ):null
-      }
+      {!Signup ? (
+        <SignUp />
+      ) : (
+        <div className="  p-4 flex justify-center items-center ">
+          <button
+            onClick={() => {
+              localStorage.removeItem("session_id");
+              window.location.reload();
+            }}
+            type="button"
+            className="text-white cursor-pointer bg-red-400 hover:bg-red-500 focus:ring-4 focus:outline-none focus:bg-red-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 mb-2"
+          >
+            Log out
+          </button>
+        </div>
+      )}
 
       {/* Recently Added */}
       <div className="text-center my-10">
@@ -224,29 +266,42 @@ export default function Home() {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-12">
         {moviesData?.map((movie2: any, index: number) => (
-          <Link href={`/MoviesDetails/${movie2.id}`} key={index}>
-            <div className="relative group shadow-lg rounded-2xl overflow-hidden hover:scale-105 transition-all duration-500">
-              <Image
-                className="w-full h-full object-cover rounded-xl"
-                src={`${environment.baseImgUrl}${movie2.poster_path}`}
-                alt={movie2?.title || "Movie Poster"}
-                width={240}
-                height={360}
-              />
-              <div className="absolute top-2 left-2 rounded-md bg-yellow-400/90 px-2 py-1 shadow-xl text-xs sm:text-sm font-bold text-black">
-                {movie2.vote_average.toFixed(1)}
-              </div>
-              <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex flex-col items-center text-center gap-1.5 lg:opacity-0 lg:translate-y-4 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-500 rounded-b-xl">
-                <p className="text-xs sm:text-sm font-medium text-yellow-300">
-                  {movie2.media_type}
-                </p>
-                <p className="text-base font-bold text-white truncate">
-                  {movie2.title}
-                </p>
-                <p className="text-xs text-gray-300">{movie2.release_date}</p>
-              </div>
-            </div>
-          </Link>
+<div key={index} className="relative">
+  <Link href={`/MoviesDetails/${movie2.id}`}>
+    <div className="relative group shadow-lg rounded-2xl overflow-hidden hover:scale-105 transition-all duration-500">
+      <Image
+        className="w-full h-full object-cover rounded-xl"
+        src={`${environment.baseImgUrl}${movie2.poster_path}`}
+        alt={movie2?.title || "Movie Poster"}
+        width={240}
+        height={360}
+      />
+
+      <div className="absolute top-2 left-2 rounded-md bg-yellow-400/90 px-2 py-1 shadow-xl text-xs sm:text-sm font-bold text-black">
+        {movie2.vote_average.toFixed(1)}
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex flex-col items-center text-center gap-1.5 lg:opacity-0 lg:translate-y-4 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-500 rounded-b-xl">
+        <p className="text-xs sm:text-sm font-medium text-yellow-300">{movie2.media_type}</p>
+        <p className="text-base font-bold text-white truncate">{movie2.title}</p>
+        <p className="text-xs text-gray-300">{movie2.release_date}</p>
+      </div>
+    </div>
+  </Link>
+
+  {/* الزرار هنا برّه الـ Link ومفيش ضغط بيفتح الديتيلز */}
+  <button
+    onClick={(e) => {
+      e.stopPropagation(); // يمنع ال event يعدي للـ Link
+      handleClick(movie2.id, "movie");
+    }}
+    className={`absolute top-2 -right-1 px-3 py-1 rounded-full cursor-pointer hover:scale-120 transition-all 
+      ${favMovies.includes(movie2.id) ? "text-red-500" : "text-white/70"}`}
+  >
+    <i className="fa-solid fa-heart text-2xl"></i>
+  </button>
+</div>
+
         ))}
       </div>
 
@@ -256,9 +311,7 @@ export default function Home() {
           disabled={page === 1}
           onClick={() => setPage((prev) => Math.max(1, prev - 1))}
           className="px-4 py-2 rounded-full bg-black/60 text-gray-300 hover:bg-yellow-400 hover:text-black transition disabled:opacity-40"
-        >
-          Prev
-        </button>
+        ></button>
         {Array.from({ length: totalPages }, (_, i) => i + 1)
           .slice(Math.max(0, page - 2), Math.min(totalPages, page + 1))
           .map((num) => (

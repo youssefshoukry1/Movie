@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { environment } from "../../enivronment";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -16,7 +16,8 @@ export default function MovieDetails() {
   const router = useRouter();
   const { id } = useParams();
 
-  const { isLoading, data: movieDetails } = useQuery({
+
+    const { isLoading, data: movieDetails } = useQuery({
     queryKey: ["getDetails", id],
     queryFn: async () => {
       const { data } = await axios.get(
@@ -271,6 +272,7 @@ export default function MovieDetails() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
+
             {movieDetails.homepage && (
               <a
                 href={movieDetails.homepage}
